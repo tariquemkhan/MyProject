@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Quick Share</string>
+    <string name="btn_create">CREATE SESSION</string>
+    <string name="btn_join">JOIN SESSION</string>
+</resources>
