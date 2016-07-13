@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -80,9 +81,22 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         int id = v.getId();
         switch (id) {
             case R.id.btn_create :
+                Log.d(TAG_NAME,"on click of button create : ");
                 break;
 
             case R.id.btn_join :
+                Log.d(TAG_NAME,"on click of button join : ");
+                mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG_NAME,"Discovery initiated : ");
+                    }
+
+                    @Override
+                    public void onFailure(int reason) {
+                        Log.d(TAG_NAME,"Discovery Failed : ");
+                    }
+                });
                 break;
         }
     }
