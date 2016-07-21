@@ -2,7 +2,11 @@ package com.example.quickshare.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -31,6 +35,12 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
 
     private String TAG_NAME = "FileShareActivity";
 
+    private String source = "";
+
+    private Context mContext;
+
+    public boolean isWifiEnabled = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +53,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
         //Initialize the layout component
         initComponent();
     }
@@ -52,6 +63,11 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     protected void onResume() {
         super.onResume();
         registerReceiver(mReceiver, mIntentFilter);
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        isWifiEnabled = mWifi.isConnected();
+        Log.d(TAG_NAME,"inside onResume " );
+        Log.d(TAG_NAME,"Wifi Status : "+isWifiEnabled);
     }
 
     /* unregister the broadcast receiver */
@@ -81,10 +97,31 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         switch (id) {
             case R.id.btn_create :
                 Log.d(TAG_NAME,"on click of button create : ");
+                source = "create";
+                if(!isWifiEnabled) {
+                    Log.d(TAG_NAME,"inside if : ");
+                    WifiManager wifiManager = (WifiManager)this.getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.setWifiEnabled(true);
+                    Log.d(TAG_NAME,"isWifi : "+wifiManager.isWifiEnabled());
+                }
+                mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG_NAME,"Discovery initiated : ");
+                        Intent intent = new Intent(FileShareActivity.this,FileTransferActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int reason) {
+                        Log.d(TAG_NAME,"Discovery Failed : ");
+                    }
+                });
                 break;
 
             case R.id.btn_join :
                 Log.d(TAG_NAME,"on click of button join : ");
+                source = "join";
                 mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {
@@ -98,6 +135,10 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                 });
                 break;
         }
+    }
+
+    public String getSource(){
+        return source;
     }
 
     /**

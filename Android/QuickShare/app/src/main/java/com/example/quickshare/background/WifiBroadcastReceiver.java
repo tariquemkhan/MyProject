@@ -41,7 +41,8 @@ public class WifiBroadcastReceiver extends BroadcastReceiver {
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION.equals(action)) {
             // Call WifiP2pManager.requestPeers() to get a list of current peers
             Log.d(TAG_NAME," Call WifiP2pManager.requestPeers() to get a list of current peers : ");
-            if (mManager != null) {
+            if (mManager != null && mActivity.getSource().equals("join")) {
+                Log.d(TAG_NAME,"before requesting peers : ");
                 mManager.requestPeers(mChannel, new MyPeerListener());
             }
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
