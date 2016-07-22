@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.quickshare.R;
+import com.example.quickshare.adapter.AppsAdapter;
 
 import java.util.List;
 
@@ -29,7 +30,11 @@ public class AppsFragment extends Fragment {
 
     private List<ApplicationInfo> packages;
 
+    private AppsAdapter adapter;
+
     private String TAG_NAME = "AppsFragment";
+
+    private Context mContext;
 
     public AppsFragment() {
         // Required empty public constructor
@@ -45,10 +50,13 @@ public class AppsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_apps, container, false);
+        mContext = getActivity();
         gvApps = (GridView) view.findViewById(R.id.gvApps);
         final PackageManager pm = getActivity().getPackageManager();
-        /*packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        for (ApplicationInfo packageInfo : packages) {
+        packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+        adapter = new AppsAdapter(packages,mContext);
+        gvApps.setAdapter(adapter);
+        /*for (ApplicationInfo packageInfo : packages) {
             Log.d(TAG_NAME, "Installed package :" + packageInfo.packageName);
             Log.d(TAG_NAME, "Source dir : " + packageInfo.sourceDir);
             Log.d(TAG_NAME, "App Name :" + packageInfo.loadLabel(pm));
