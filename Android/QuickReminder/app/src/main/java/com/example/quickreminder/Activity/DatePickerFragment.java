@@ -8,7 +8,9 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TabHost;
+import android.widget.TimePicker;
 
 import com.example.quickreminder.R;
 
@@ -17,14 +19,22 @@ import com.example.quickreminder.R;
  */
 public class DatePickerFragment extends DialogFragment {
 
+    private DatePicker datePicker;
+
+    private TimePicker timePicker;
+
+    private String TAG = "DatePickerFragment";
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Simple Dialog");
+        //builder.setTitle("Simple Dialog");
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_date_picker,null);
         builder.setView(view);
-
+        builder.setCancelable(false);
+        datePicker = (DatePicker)view.findViewById(R.id.datePicker);
+        timePicker = (TimePicker)view.findViewById(R.id.timePicker);
 
         TabHost host = (TabHost)view.findViewById(R.id.tabHost);
         host.setup();
@@ -47,21 +57,12 @@ public class DatePickerFragment extends DialogFragment {
                 dismiss();
             }
         });
-
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dismiss();
             }
         });
-
-        Dialog d = builder.show();
-        int dividerId = d.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
-        Log.d("Alpha","dividerId : "+dividerId);
-        View divider = d.findViewById(dividerId);
-        Log.d("Alpha","Divider : "+divider);
-        //divider.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
         return builder.create();
     }
 
