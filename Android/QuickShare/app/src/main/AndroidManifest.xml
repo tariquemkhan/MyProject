@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.FileTransferActivity"
-            android:theme="@style/FileTransferTheme"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activity.FileShareActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

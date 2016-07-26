@@ -1,8 +1,10 @@
 package com.example.quickshare.activity;
 
 import android.os.StrictMode;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +22,10 @@ public class FileTransferActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
+    private ActionBar actionBar;
+
+    private AppBarLayout appBarLayout;
+
     private String TAG_NAME = "FileTransferActivity";
 
     @Override
@@ -30,10 +36,13 @@ public class FileTransferActivity extends AppCompatActivity {
     }
 
     private void initComponent() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
