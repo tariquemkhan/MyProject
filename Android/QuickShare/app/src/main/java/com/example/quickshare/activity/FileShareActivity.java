@@ -20,6 +20,7 @@ import android.widget.Button;
 
 import com.example.quickshare.R;
 import com.example.quickshare.background.WifiBroadcastReceiver;
+import com.example.quickshare.helpers.CustomDialogFragment;
 
 public class FileShareActivity extends AppCompatActivity implements ChannelListener, View.OnClickListener {
 
@@ -29,7 +30,9 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
 
     private BroadcastReceiver mReceiver;
 
-    private IntentFilter mIntentFilter;
+    private IntentFilter wifiIntentFilter,deviceIntentFilter;
+
+    private String DEVICE_BROADCAST_KEY = "device_broadcast_key";
 
     private Button btnCreateSession,btnJoin;
 
@@ -48,11 +51,12 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
         mReceiver = new WifiBroadcastReceiver(mManager, mChannel, this);
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        deviceIntentFilter = new IntentFilter(DEVICE_BROADCAST_KEY);
+        wifiIntentFilter = new IntentFilter();
+        wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+        wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+        wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+        wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         //Initialize the layout component
         initComponent();
@@ -62,7 +66,8 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mReceiver, mIntentFilter);
+        registerReceiver(mReceiver, wifiIntentFilter);
+        registerReceiver(deviceBroadcastReceiver,deviceIntentFilter);
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         isWifiEnabled = mWifi.isConnected();
@@ -75,6 +80,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     protected void onStop() {
         super.onStop();
         unregisterReceiver(mReceiver);
+        unregisterReceiver(deviceBroadcastReceiver);
     }
 
     public void initComponent() {
@@ -85,6 +91,13 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         btnCreateSession.setOnClickListener(this);
         btnJoin.setOnClickListener(this);
     }
+
+    BroadcastReceiver deviceBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG_NAME,"inside onReceive in FileShareActivity : ");
+        }
+    };
 
     @Override
     public void onChannelDisconnected() {
@@ -97,7 +110,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         switch (id) {
             case R.id.btn_create :
                 Log.d(TAG_NAME,"on click of button create : ");
-                source = "create";
+                /*source = "create";
                 if(!isWifiEnabled) {
                     Log.d(TAG_NAME,"inside if : ");
                     WifiManager wifiManager = (WifiManager)this.getSystemService(Context.WIFI_SERVICE);
@@ -116,7 +129,14 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                     public void onFailure(int reason) {
                         Log.d(TAG_NAME,"Discovery Failed : ");
                     }
-                });
+                });*/
+                CustomDialogFragment customDialogFragment = new CustomDialogFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("DIALOG_TYPE",2);
+                bundle.putString("DIALOG_TITLE","List of available devices");
+                //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
+                customDialogFragment.setArguments(bundle);
+                customDialogFragment.show(getSupportFragmentManager(),"Dialog");
                 break;
 
             case R.id.btn_join :
