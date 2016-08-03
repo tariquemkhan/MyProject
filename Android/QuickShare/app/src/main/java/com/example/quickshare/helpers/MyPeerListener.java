@@ -46,6 +46,7 @@ public class MyPeerListener implements PeerListListener {
                 DeviceModel deviceModel =  new DeviceModel();
                 deviceModel.setDeviceName(device.deviceName);
                 deviceModel.setGroupOwner(device.isGroupOwner());
+                deviceModel.setDeviceAddress(device.deviceAddress);
                 deviceList.add(deviceModel);
             }
         }

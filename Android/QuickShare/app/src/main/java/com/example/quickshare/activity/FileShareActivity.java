@@ -10,6 +10,8 @@ import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
@@ -19,8 +21,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.quickshare.R;
+import com.example.quickshare.adapter.DeviceListAdapter;
 import com.example.quickshare.background.WifiBroadcastReceiver;
+import com.example.quickshare.database.models.DeviceModel;
 import com.example.quickshare.helpers.CustomDialogFragment;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class FileShareActivity extends AppCompatActivity implements ChannelListener, View.OnClickListener {
 
@@ -44,6 +51,10 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
 
     public boolean isWifiEnabled = false;
 
+    private ArrayList<DeviceModel> deviceModelArrayList;
+
+    private DeviceListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+        mContext = this;
 
         //Initialize the layout component
         initComponent();
@@ -92,17 +104,32 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         btnJoin.setOnClickListener(this);
     }
 
-    BroadcastReceiver deviceBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG_NAME,"inside onReceive in FileShareActivity : ");
-        }
-    };
-
     @Override
     public void onChannelDisconnected() {
 
     }
+
+    BroadcastReceiver deviceBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG_NAME,"inside onReceive in FileShareActivity : ");
+            CustomDialogFragment fragment = (CustomDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
+            fragment.dismissProgressDialog();
+
+            deviceModelArrayList = (ArrayList<DeviceModel>) intent.getSerializableExtra("DEVICE_LIST");
+            Log.d(TAG_NAME,"Devices Size : "+deviceModelArrayList.size());
+
+            CustomDialogFragment customDialogFragment = new CustomDialogFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("DIALOG_TYPE",2);
+            bundle.putString("DIALOG_TITLE","List of available devices");
+            bundle.putSerializable("DEVICES_LIST",deviceModelArrayList);
+            //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
+            customDialogFragment.setArguments(bundle);
+            customDialogFragment.show(getSupportFragmentManager(),"Dialog");
+
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -110,7 +137,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         switch (id) {
             case R.id.btn_create :
                 Log.d(TAG_NAME,"on click of button create : ");
-                /*source = "create";
+                source = "create";
                 if(!isWifiEnabled) {
                     Log.d(TAG_NAME,"inside if : ");
                     WifiManager wifiManager = (WifiManager)this.getSystemService(Context.WIFI_SERVICE);
@@ -129,14 +156,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                     public void onFailure(int reason) {
                         Log.d(TAG_NAME,"Discovery Failed : ");
                     }
-                });*/
-                CustomDialogFragment customDialogFragment = new CustomDialogFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("DIALOG_TYPE",2);
-                bundle.putString("DIALOG_TITLE","List of available devices");
-                //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
-                customDialogFragment.setArguments(bundle);
-                customDialogFragment.show(getSupportFragmentManager(),"Dialog");
+                });
                 break;
 
             case R.id.btn_join :
@@ -146,6 +166,13 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                     @Override
                     public void onSuccess() {
                         Log.d(TAG_NAME,"Discovery initiated : ");
+                        CustomDialogFragment customDialogFragment = new CustomDialogFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("DIALOG_TYPE",1);
+                        bundle.putString("DIALOG_MESSAGE","Searching for devices. Please wait...");
+                        //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
+                        customDialogFragment.setArguments(bundle);
+                        customDialogFragment.show(getSupportFragmentManager(),"Dialog");
                     }
 
                     @Override

@@ -11,6 +11,8 @@ public class DeviceModel implements Serializable {
 
     private boolean isGroupOwner;
 
+    private String deviceAddress;
+
     public String getDeviceName() {
         return deviceName;
     }
@@ -25,5 +27,13 @@ public class DeviceModel implements Serializable {
 
     public void setGroupOwner(boolean groupOwner) {
         isGroupOwner = groupOwner;
+    }
+
+    public String getDeviceAddress() {
+        return deviceAddress;
+    }
+
+    public void setDeviceAddress(String deviceAddress) {
+        this.deviceAddress = deviceAddress;
     }
 }
