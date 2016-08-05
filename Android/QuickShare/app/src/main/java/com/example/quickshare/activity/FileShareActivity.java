@@ -126,6 +126,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
             bundle.putSerializable("DEVICES_LIST",deviceModelArrayList);
             //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
             customDialogFragment.setArguments(bundle);
+            customDialogFragment.setCancelable(false);
             customDialogFragment.show(getSupportFragmentManager(),"Dialog");
 
         }
@@ -171,6 +172,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                         bundle.putInt("DIALOG_TYPE",1);
                         bundle.putString("DIALOG_MESSAGE","Searching for devices. Please wait...");
                         //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
+                        customDialogFragment.setCancelable(false);
                         customDialogFragment.setArguments(bundle);
                         customDialogFragment.show(getSupportFragmentManager(),"Dialog");
                     }

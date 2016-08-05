@@ -69,7 +69,6 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
             Log.d(TAG,"device list : "+deviceModelArrayList.size());
         }
         deviceIntentFilter = new IntentFilter(DEVICE_BROADCAST_KEY);
-        deviceModelArrayList = new ArrayList<>();
     }
 
     @Override
