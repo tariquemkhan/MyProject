@@ -1,8 +1,11 @@
 package com.example.quickreminder.Activity;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -13,6 +16,9 @@ import android.widget.TabHost;
 import android.widget.TimePicker;
 
 import com.example.quickreminder.R;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Dell on 7/23/2016.
@@ -25,12 +31,22 @@ public class DatePickerFragment extends DialogFragment {
 
     private String TAG = "DatePickerFragment";
 
+    public OnDateClickListener onDateClickListener;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //builder.setTitle("Simple Dialog");
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_date_picker,null);
+        onDateClickListener = (OnDateClickListener) getActivity();
         builder.setView(view);
         builder.setCancelable(false);
         datePicker = (DatePicker)view.findViewById(R.id.datePicker);
@@ -52,8 +68,14 @@ public class DatePickerFragment extends DialogFragment {
         host.addTab(spec);
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth()
+                ,timePicker.getHour(),timePicker.getMinute());
+
+                Log.d(TAG,"Date : "+calendar.getTimeInMillis());
+                onDateClickListener.addDate(calendar.getTimeInMillis());
                 dismiss();
             }
         });
@@ -63,6 +85,9 @@ public class DatePickerFragment extends DialogFragment {
                 dismiss();
             }
         });
+
+
+
         return builder.create();
     }
 

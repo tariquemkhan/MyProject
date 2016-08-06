@@ -3,17 +3,22 @@ package com.example.quickreminder.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.quickreminder.R;
 
-public class CreateReminderActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateReminderActivity extends AppCompatActivity implements View.OnClickListener,OnDateClickListener {
 
     private ImageView ivTimepicker;
 
     private Button btnOk,btnCancel;
+
+    private long timestamp = 0;
+
+    private String TAG = "CreateReminderActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +49,10 @@ public class CreateReminderActivity extends AppCompatActivity implements View.On
             case R.id.btnCancel :
                 break;
         }
+    }
+
+    @Override
+    public void addDate(long timeStamp) {
+        Log.d(TAG,"date in addDate() : "+timeStamp);
     }
 }
