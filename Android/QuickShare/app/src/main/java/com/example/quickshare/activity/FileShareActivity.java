@@ -25,11 +25,12 @@ import com.example.quickshare.adapter.DeviceListAdapter;
 import com.example.quickshare.background.WifiBroadcastReceiver;
 import com.example.quickshare.database.models.DeviceModel;
 import com.example.quickshare.helpers.CustomDialogFragment;
+import com.example.quickshare.helpers.CustomDialogFragment.DeviceActionListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class FileShareActivity extends AppCompatActivity implements ChannelListener, View.OnClickListener {
+public class FileShareActivity extends AppCompatActivity implements ChannelListener, View.OnClickListener,DeviceActionListener {
 
     private WifiP2pManager mManager;
 
@@ -43,7 +44,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
 
     private Button btnCreateSession,btnJoin;
 
-    private String TAG_NAME = "FileShareActivity";
+    public static String TAG_NAME = "FileShareActivity";
 
     private String source = "";
 
@@ -114,8 +115,9 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG_NAME,"inside onReceive in FileShareActivity : ");
             CustomDialogFragment fragment = (CustomDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
-            fragment.dismissProgressDialog();
-
+            if (fragment != null) {
+                fragment.dismissProgressDialog();
+            }
             deviceModelArrayList = (ArrayList<DeviceModel>) intent.getSerializableExtra("DEVICE_LIST");
             Log.d(TAG_NAME,"Devices Size : "+deviceModelArrayList.size());
 
@@ -190,18 +192,34 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         return source;
     }
 
-    /**
-     * An interface-callback for the activity to listen to fragment interaction
-     * events.
-     */
-    public interface DeviceActionListener {
+    @Override
+    public void showDetails(WifiP2pDevice device) {
 
-        void showDetails(WifiP2pDevice device);
+    }
 
-        void cancelDisconnect();
+    @Override
+    public void cancelDisconnect() {
 
-        void connect(WifiP2pConfig config);
+    }
 
-        void disconnect();
+    @Override
+    public void connect(WifiP2pConfig config) {
+        Log.d(TAG_NAME,"inside onConnect : ");
+        mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG_NAME,"inside onSuccess : ");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d(TAG_NAME,"inside onFailure : ");
+            }
+        });
+    }
+
+    @Override
+    public void disconnect() {
+
     }
 }

@@ -7,6 +7,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.quickshare.R;
+import com.example.quickshare.activity.FileShareActivity;
 import com.example.quickshare.adapter.DeviceListAdapter;
 import com.example.quickshare.database.models.DeviceModel;
 
@@ -54,6 +58,8 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
 
     private ArrayList<DeviceModel> deviceModelArrayList;
 
+    private DeviceActionListener deviceActionListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,7 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
         dialogTitle = bundle.getString("DIALOG_TITLE");
         dialogMessage = bundle.getString("DIALOG_MESSAGE");
         deviceModelArrayList = (ArrayList<DeviceModel>) bundle.getSerializable("DEVICES_LIST");
+        deviceActionListener = (DeviceActionListener) getActivity();
         //Log.d(TAG,"TYPE : "+dialogType);
         if (deviceModelArrayList != null) {
             Log.d(TAG,"device list : "+deviceModelArrayList.size());
@@ -151,11 +158,35 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
     }
 
     public void dismissProgressDialog() {
-        progressDialog.dismiss();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.d(FileShareActivity.TAG_NAME,"inside onItemClcik() : ");
+        DeviceModel deviceModel = adapter.getItem(position);
+        WifiP2pConfig config = new WifiP2pConfig();
+        config.deviceAddress = deviceModel.getDeviceAddress();
+        config.wps.setup = WpsInfo.PBC;
+        deviceActionListener.connect(config);
+        getDialog().dismiss();
 
+    }
+
+    /**
+     * An interface-callback for the activity to listen to fragment interaction
+     * events.
+     */
+    public interface DeviceActionListener {
+
+        void showDetails(WifiP2pDevice device);
+
+        void cancelDisconnect();
+
+        void connect(WifiP2pConfig config);
+
+        void disconnect();
     }
 }

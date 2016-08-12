@@ -9,6 +9,7 @@ import android.net.wifi.p2p.WifiP2pManager.PeerListListener;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.quickshare.activity.FileShareActivity;
 import com.example.quickshare.database.models.DeviceModel;
 
 import java.io.Serializable;
@@ -38,7 +39,7 @@ public class MyPeerListener implements PeerListListener {
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peerList) {
 
-        Log.d(TAG_NAME, "inside onPeersAvailable : ");
+        Log.d(FileShareActivity.TAG_NAME, "inside onPeersAvailable : ");
         peers.clear();
         peers.addAll(peerList.getDeviceList());
         if (peers != null) {
