@@ -7,4 +7,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_send">SEND</string>
     <string name="btn_select">SELECTED (0)</string>
+    <string name="no_device_found">No Available Devices. Try again.</string>
+    <string name="retry">RETRY</string>
 </resources>
