@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Created by root on 28/7/16.
  */
-public class CustomDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
+public class CustomDialogFragment extends DialogFragment {
 
     private String TAG = "CustomDialogFragment";
 
@@ -70,7 +70,6 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
         dialogTitle = bundle.getString("DIALOG_TITLE");
         dialogMessage = bundle.getString("DIALOG_MESSAGE");
         deviceModelArrayList = (ArrayList<DeviceModel>) bundle.getSerializable("DEVICES_LIST");
-        deviceActionListener = (DeviceActionListener) getActivity();
         //Log.d(TAG,"TYPE : "+dialogType);
         if (deviceModelArrayList != null) {
             Log.d(TAG,"device list : "+deviceModelArrayList.size());
@@ -143,15 +142,6 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
                 });
                 dialog = builder.create();
 
-                lvDevices = (ListView) view.findViewById(R.id.lvDevice);
-                lvDevices.setOnItemClickListener(this);
-                if (deviceModelArrayList != null) {
-                    Log.d(TAG,"inside if : ");
-                    Log.d(TAG,"Device : "+deviceModelArrayList.size());
-                    adapter = new DeviceListAdapter(getActivity(),R.layout.device_list,deviceModelArrayList);
-                    lvDevices.setAdapter(adapter);
-                }
-
                 break;
         }
         return dialog;
@@ -159,11 +149,13 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
 
     public void dismissProgressDialog() {
         if (progressDialog != null) {
-            progressDialog.dismiss();
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 
-    @Override
+    /*@Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(FileShareActivity.TAG_NAME,"inside onItemClcik() : ");
         DeviceModel deviceModel = adapter.getItem(position);
@@ -173,7 +165,7 @@ public class CustomDialogFragment extends DialogFragment implements AdapterView.
         deviceActionListener.connect(config);
         getDialog().dismiss();
 
-    }
+    }*/
 
     /**
      * An interface-callback for the activity to listen to fragment interaction

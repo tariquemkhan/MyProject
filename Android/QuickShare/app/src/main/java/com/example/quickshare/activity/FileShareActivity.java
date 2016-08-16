@@ -38,9 +38,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
 
     private BroadcastReceiver mReceiver;
 
-    private IntentFilter wifiIntentFilter,deviceIntentFilter;
-
-    private String DEVICE_BROADCAST_KEY = "device_broadcast_key";
+    private IntentFilter wifiIntentFilter;
 
     private Button btnCreateSession,btnJoin;
 
@@ -63,7 +61,6 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
         mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
         mReceiver = new WifiBroadcastReceiver(mManager, mChannel, this);
-        deviceIntentFilter = new IntentFilter(DEVICE_BROADCAST_KEY);
         wifiIntentFilter = new IntentFilter();
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -80,7 +77,6 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     protected void onResume() {
         super.onResume();
         registerReceiver(mReceiver, wifiIntentFilter);
-        registerReceiver(deviceBroadcastReceiver,deviceIntentFilter);
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         isWifiEnabled = mWifi.isConnected();
@@ -93,7 +89,6 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     protected void onStop() {
         super.onStop();
         unregisterReceiver(mReceiver);
-        unregisterReceiver(deviceBroadcastReceiver);
     }
 
     public void initComponent() {
@@ -109,30 +104,6 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
     public void onChannelDisconnected() {
 
     }
-
-    BroadcastReceiver deviceBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG_NAME,"inside onReceive in FileShareActivity : ");
-            CustomDialogFragment fragment = (CustomDialogFragment) getSupportFragmentManager().findFragmentByTag("Dialog");
-            if (fragment != null) {
-                fragment.dismissProgressDialog();
-            }
-            deviceModelArrayList = (ArrayList<DeviceModel>) intent.getSerializableExtra("DEVICE_LIST");
-            Log.d(TAG_NAME,"Devices Size : "+deviceModelArrayList.size());
-
-            CustomDialogFragment customDialogFragment = new CustomDialogFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("DIALOG_TYPE",2);
-            bundle.putString("DIALOG_TITLE","List of available devices");
-            bundle.putSerializable("DEVICES_LIST",deviceModelArrayList);
-            //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
-            customDialogFragment.setArguments(bundle);
-            customDialogFragment.setCancelable(false);
-            customDialogFragment.show(getSupportFragmentManager(),"Dialog");
-
-        }
-    };
 
     @Override
     public void onClick(View v) {
@@ -169,14 +140,8 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                     @Override
                     public void onSuccess() {
                         Log.d(TAG_NAME,"Discovery initiated : ");
-                        CustomDialogFragment customDialogFragment = new CustomDialogFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("DIALOG_TYPE",1);
-                        bundle.putString("DIALOG_MESSAGE","Searching for devices. Please wait...");
-                        //bundle.putString("DIALOG_MESSAGE","This is sample Dialog.");
-                        customDialogFragment.setCancelable(false);
-                        customDialogFragment.setArguments(bundle);
-                        customDialogFragment.show(getSupportFragmentManager(),"Dialog");
+                        Intent deviceListIntent = new Intent(FileShareActivity.this, DeviceListActivity.class);
+                        startActivity(deviceListIntent);
                     }
 
                     @Override
