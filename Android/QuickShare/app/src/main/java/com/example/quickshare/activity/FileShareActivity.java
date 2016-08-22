@@ -25,7 +25,7 @@ import com.example.quickshare.adapter.DeviceListAdapter;
 import com.example.quickshare.background.WifiBroadcastReceiver;
 import com.example.quickshare.database.models.DeviceModel;
 import com.example.quickshare.helpers.CustomDialogFragment;
-import com.example.quickshare.helpers.CustomDialogFragment.DeviceActionListener;
+import com.example.quickshare.adapter.DeviceListAdapter.DeviceActionListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
             case R.id.btn_create :
                 Log.d(TAG_NAME,"on click of button create : ");
                 source = "create";
-                if(!isWifiEnabled) {
+                /*if(!isWifiEnabled) {
                     Log.d(TAG_NAME,"inside if : ");
                     WifiManager wifiManager = (WifiManager)this.getSystemService(Context.WIFI_SERVICE);
                     wifiManager.setWifiEnabled(true);
@@ -130,18 +130,13 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                     public void onFailure(int reason) {
                         Log.d(TAG_NAME,"Discovery Failed : ");
                     }
-                });
-                break;
-
-            case R.id.btn_join :
-                Log.d(TAG_NAME,"on click of button join : ");
-                source = "join";
+                });*/
                 mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {
                         Log.d(TAG_NAME,"Discovery initiated : ");
-                        Intent deviceListIntent = new Intent(FileShareActivity.this, DeviceListActivity.class);
-                        startActivity(deviceListIntent);
+                        Intent intent = new Intent(FileShareActivity.this,FileTransferActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
@@ -149,6 +144,14 @@ public class FileShareActivity extends AppCompatActivity implements ChannelListe
                         Log.d(TAG_NAME,"Discovery Failed : ");
                     }
                 });
+
+                break;
+
+            case R.id.btn_join :
+                Log.d(TAG_NAME,"on click of button join : ");
+                source = "join";
+                Intent deviceListIntent = new Intent(FileShareActivity.this, DeviceListActivity.class);
+                startActivity(deviceListIntent);
                 break;
         }
     }

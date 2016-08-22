@@ -36,7 +36,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.FileShareActivity" />
         </activity>
-        <activity android:name=".activity.DeviceListActivity"></activity>
+        <activity android:name=".activity.DeviceListActivity"
+            android:label="@string/device_activity">
+
+        </activity>
     </application>
 
 </manifest>
