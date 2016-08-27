@@ -1,6 +1,8 @@
 package com.example.quickreminder.Activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,12 +25,24 @@ public class ReminderActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
 
-    private String TAG = "ReminderActivity";
+    public static String TAG = "ReminderActivity";
+
+    private Cursor cursor;
+
+    private Context mContext;
+
+    private ReminderDatabase reminderDatabase;
+
+    private ReminderListAdapter reminderListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
+        mContext = this;
+        reminderDatabase = new ReminderDatabase(mContext);
+        cursor = reminderDatabase.getReminderList();
+        Log.d(TAG,"Cursor Count : "+cursor.getCount());
         initComponent();
     }
 
@@ -43,6 +57,9 @@ public class ReminderActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        reminderListAdapter = new ReminderListAdapter(mContext,cursor);
+        lvReminderList.setAdapter(reminderListAdapter);
     }
 }
 
