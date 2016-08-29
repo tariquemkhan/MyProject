@@ -13,6 +13,8 @@ public class DeviceModel implements Serializable {
 
     private String deviceAddress;
 
+    private int status;
+
     public String getDeviceName() {
         return deviceName;
     }
@@ -35,5 +37,13 @@ public class DeviceModel implements Serializable {
 
     public void setDeviceAddress(String deviceAddress) {
         this.deviceAddress = deviceAddress;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

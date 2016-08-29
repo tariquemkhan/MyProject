@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.quickshare.activity.FileShareActivity;
+import com.example.quickshare.activity.FileTransferActivity;
 import com.example.quickshare.database.models.DeviceModel;
 
 import java.io.Serializable;
@@ -48,11 +49,13 @@ public class MyPeerListener implements PeerListListener {
                 deviceModel.setDeviceName(device.deviceName);
                 deviceModel.setGroupOwner(device.isGroupOwner());
                 deviceModel.setDeviceAddress(device.deviceAddress);
+                deviceModel.setStatus(device.status);
                 deviceList.add(deviceModel);
             }
         }
         sendBroadcast();
-        Log.d(TAG_NAME, "Device size : " + peers.size());
+        Log.d(FileShareActivity.TAG_NAME, "Device size : " + peers.size());
+        Log.d(FileShareActivity.TAG_NAME,"Status : "+peers.get(0).status);
     }
 
 

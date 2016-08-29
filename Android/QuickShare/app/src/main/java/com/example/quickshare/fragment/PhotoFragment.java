@@ -1,16 +1,30 @@
 package com.example.quickshare.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.example.quickshare.R;
+import com.example.quickshare.adapter.AllPhotoAdapter;
+
+import java.util.ArrayList;
 
 public class PhotoFragment extends Fragment {
+
+    private AllPhotoAdapter allPhotoAdapter;
+
+    private GridView gvShowImage;
+
+    private ArrayList<String> imagePathList;
+
+    private Context mContext;
 
     public PhotoFragment() {
         // Required empty public constructor
@@ -33,7 +47,29 @@ public class PhotoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo, container, false);
+        mContext = getActivity();
+        gvShowImage = (GridView) view.findViewById(R.id.gvPhoto);
+        imagePathList = new ArrayList<>();
+        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+        final String orderBy = MediaStore.Images.Media.DATE_ADDED;
+        Cursor imagecursor = mContext.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                null, orderBy + " DESC");
+        if (imagecursor != null) {
+            for (int i = 0; i < imagecursor.getCount(); i++) {
+                imagecursor.moveToPosition(i);
+                int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                //if (ImageUtils.checkFileExistance(imagecursor.getString(dataColumnIndex))) {*/
+                    imagePathList.add(imagecursor.getString(dataColumnIndex));
+                //}
+
+            }
+        }
+        allPhotoAdapter = new AllPhotoAdapter(mContext,imagePathList);
+        gvShowImage.setAdapter(allPhotoAdapter);
+
+        return view;
     }
 
 

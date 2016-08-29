@@ -22,7 +22,6 @@ import com.example.quickshare.background.WifiBroadcastReceiver;
 import com.example.quickshare.database.models.DeviceModel;
 import com.example.quickshare.helpers.CustomDialogFragment;
 import com.example.quickshare.adapter.DeviceListAdapter.DeviceActionListener;
-
 import java.util.ArrayList;
 
 public class DeviceListActivity extends AppCompatActivity implements View.OnClickListener,DeviceActionListener {
@@ -49,8 +48,6 @@ public class DeviceListActivity extends AppCompatActivity implements View.OnClic
 
     private WifiP2pManager.Channel mChannel;
 
-
-
     private ArrayList<DeviceModel> deviceModelArrayList = new ArrayList<>();
 
     @Override
@@ -68,6 +65,7 @@ public class DeviceListActivity extends AppCompatActivity implements View.OnClic
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         wifiIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
         initComponent();
+
     }
 
     @Override
@@ -181,14 +179,16 @@ public class DeviceListActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void connect(WifiP2pConfig config) {
+    public void connect(final WifiP2pConfig config) {
         Log.d(FileShareActivity.TAG_NAME,"inside onConnect : ");
         mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
 
                 Log.d(FileShareActivity.TAG_NAME,"inside onSuccess : ");
+
                 Intent intent = new Intent(DeviceListActivity.this,FileTransferActivity.class);
+                intent.putExtra("RECEIVER_ADDRESS",config.deviceAddress);
                 startActivity(intent);
             }
 
