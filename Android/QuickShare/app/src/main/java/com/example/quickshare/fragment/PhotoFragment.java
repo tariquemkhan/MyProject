@@ -6,13 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.example.quickshare.R;
+import com.example.quickshare.activity.FileTransferActivity;
 import com.example.quickshare.adapter.AllPhotoAdapter;
+import com.example.quickshare.helpers.Utils;
 
 import java.util.ArrayList;
 
@@ -56,10 +59,17 @@ public class PhotoFragment extends Fragment {
         Cursor imagecursor = mContext.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
                 null, orderBy + " DESC");
+        Log.d(FileTransferActivity.TAG_NAME,"Cursor count : "+imagecursor.getCount());
+        if (imagecursor.getCount() != 0) {
+            Utils.getImageFolderName(imagecursor);
+        }
         if (imagecursor != null) {
             for (int i = 0; i < imagecursor.getCount(); i++) {
+
                 imagecursor.moveToPosition(i);
                 int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+
+                Log.d(FileTransferActivity.TAG_NAME,"Path : "+imagecursor.getString(dataColumnIndex));
                 //if (ImageUtils.checkFileExistance(imagecursor.getString(dataColumnIndex))) {*/
                     imagePathList.add(imagecursor.getString(dataColumnIndex));
                 //}

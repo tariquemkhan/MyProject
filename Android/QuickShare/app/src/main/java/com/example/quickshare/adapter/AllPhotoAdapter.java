@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.quickshare.R;
+import com.example.quickshare.helpers.SquareImageView;
 import com.example.quickshare.helpers.Utils;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class AllPhotoAdapter extends BaseAdapter {
 
     @Override
     public String getItem(int position) {
-        return mImageList.get(0);
+        return mImageList.get(position);
     }
 
     @Override
@@ -49,19 +50,20 @@ public class AllPhotoAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(mContext).inflate(R.layout.photo_list_items, parent, false);
-            holder.ivImageDisplay = (ImageView) convertView.findViewById(R.id.ivImageDisplay);
+            holder.ivImageDisplay = (SquareImageView) convertView.findViewById(R.id.ivImageDisplay);
             holder.tvImageFolderName = (TextView) convertView.findViewById(R.id.tvImageFolderName);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        String imagePath = getItem(0);
+        String imagePath = getItem(position);
         Bitmap bitmap = Utils.UriToBitmap(imagePath);
         holder.ivImageDisplay.setImageBitmap(bitmap);
         return convertView;
     }
 
     public class ViewHolder {
-        ImageView ivImageDisplay;
+        SquareImageView ivImageDisplay;
 
         TextView tvImageFolderName;
     }
