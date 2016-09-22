@@ -11,14 +11,14 @@ public class ImageCategorizingModel {
 
     private int imageCount;
 
-    private boolean isInMemory;
+    private String folderName;
 
-    public boolean isInMemory() {
-        return isInMemory;
+    public String getFolderName() {
+        return folderName;
     }
 
-    public void setInMemory(boolean inMemory) {
-        isInMemory = inMemory;
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
     }
 
     public String get_id() {
@@ -44,4 +44,5 @@ public class ImageCategorizingModel {
     public void setImageCount(int imageCount) {
         this.imageCount = imageCount;
     }
+
 }

@@ -3,6 +3,7 @@ package com.example.quickshare.fragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -15,9 +16,12 @@ import android.widget.GridView;
 import com.example.quickshare.R;
 import com.example.quickshare.activity.FileTransferActivity;
 import com.example.quickshare.adapter.AllPhotoAdapter;
+import com.example.quickshare.database.models.ImageCategorizingModel;
 import com.example.quickshare.helpers.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class PhotoFragment extends Fragment {
 
@@ -25,7 +29,7 @@ public class PhotoFragment extends Fragment {
 
     private GridView gvShowImage;
 
-    private ArrayList<String> imagePathList;
+    private HashMap<Integer,ImageCategorizingModel> imagePathList;
 
     private Context mContext;
 
@@ -53,33 +57,48 @@ public class PhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
         mContext = getActivity();
         gvShowImage = (GridView) view.findViewById(R.id.gvPhoto);
-        imagePathList = new ArrayList<>();
-        final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-        final String orderBy = MediaStore.Images.Media.DATE_ADDED;
-        Cursor imagecursor = mContext.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy + " DESC");
-        Log.d(FileTransferActivity.TAG_NAME,"Cursor count : "+imagecursor.getCount());
-        if (imagecursor.getCount() != 0) {
-            Utils.getImageFolderName(imagecursor);
-        }
-        if (imagecursor != null) {
-            for (int i = 0; i < imagecursor.getCount(); i++) {
+        imagePathList = new LinkedHashMap<>();
 
-                imagecursor.moveToPosition(i);
-                int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-
-                Log.d(FileTransferActivity.TAG_NAME,"Path : "+imagecursor.getString(dataColumnIndex));
-                //if (ImageUtils.checkFileExistance(imagecursor.getString(dataColumnIndex))) {*/
-                    imagePathList.add(imagecursor.getString(dataColumnIndex));
-                //}
-
-            }
-        }
         allPhotoAdapter = new AllPhotoAdapter(mContext,imagePathList);
         gvShowImage.setAdapter(allPhotoAdapter);
-
+        new loadPhotoAsync().execute();
         return view;
+    }
+
+    public class loadPhotoAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+            final String orderBy = MediaStore.Images.Media.DATE_ADDED;
+            Cursor imagecursor = mContext.getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                    null, orderBy + " DESC");
+            //Log.d(FileTransferActivity.TAG_NAME,"Cursor count : "+imagecursor.getCount());
+            if (imagecursor.getCount() != 0) {
+                Utils.getImageFolderName(imagecursor);
+            }
+            if (imagecursor != null) {
+                if (imagecursor.getCount() != 0) {
+                    imagePathList = Utils.getImageFolderName(imagecursor);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            //Log.d(FileTransferActivity.TAG_NAME,"inside on postExecute() of loadPhotoAsync : ");
+            //Log.d(FileTransferActivity.TAG_NAME,imagePathList.toString());
+            allPhotoAdapter = new AllPhotoAdapter(mContext,imagePathList);
+            gvShowImage.setAdapter(allPhotoAdapter);
+            super.onPostExecute(aVoid);
+        }
     }
 
 
