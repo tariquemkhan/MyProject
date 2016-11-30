@@ -4,15 +4,44 @@
     android:layout_height="match_parent"
     tools:context="com.example.quickshare.fragment.PhotoFragment">
 
-    <GridView
-        android:id="@+id/gvPhoto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:horizontalSpacing="5dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp">
+        android:orientation="vertical">
 
-    </GridView>
+        <LinearLayout
+            android:id="@+id/llBackLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BACK"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/gvPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:horizontalSpacing="5dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="5dp">
+
+        </GridView>
+
+        <GridView
+            android:id="@+id/gvDetailedPhotos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+        </GridView>
+
+    </LinearLayout>
 
 </FrameLayout>
