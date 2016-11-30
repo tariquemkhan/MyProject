@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ivAppIcon"
-        android:src="@mipmap/ic_launcher"
-        />
+    <RelativeLayout
+        android:id="@+id/rlImageContainer"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/ivAppIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:src="@mipmap/ic_launcher" />
+
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/tvAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_below="@id/rlImageContainer"
+        android:layout_centerHorizontal="true"
         android:ellipsize="end"
-        android:text="HELLO"
-        android:id="@+id/tvAppName"/>
+        android:maxLines="1"
+        android:maxWidth="80dp"
+        android:text="HELLO" />
 
     <TextView
+        android:id="@+id/tvAppSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/tvAppSize"/>
+        android:layout_below="@id/tvAppName"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 
-</LinearLayout>
+</RelativeLayout>

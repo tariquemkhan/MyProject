@@ -23,7 +23,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/button_gradient"
             android:text="@string/btn_create"
-            android:textColor="#FFF"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/button_gradient"
             android:text="@string/btn_join"
-            android:textColor="#FFF"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:textStyle="bold" />
 
