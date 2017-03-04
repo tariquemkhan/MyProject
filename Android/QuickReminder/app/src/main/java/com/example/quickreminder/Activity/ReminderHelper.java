@@ -1,5 +1,7 @@
 package com.example.quickreminder.Activity;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.UUID;
@@ -16,6 +18,7 @@ public class ReminderHelper {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milisecond);
         formattedDate = simpleDateFormat.format(calendar.getTime());
+        Log.d(ReminderActivity.TAG,"Date : "+formattedDate);
         return formattedDate;
     }
 

@@ -76,4 +76,16 @@ public class ReminderDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    public Cursor getTask(String task_id) {
+        Cursor cursor = null;
+        String query = "SELECT * FROM "+TABLE_NAME+" WHERE "+TASK_ID+"='"+task_id+"';";
+        try{
+            SQLiteDatabase db = this.getWritableDatabase();
+            cursor = db.rawQuery(query,null);
+        } catch (Exception e) {
+            Log.d(ReminderActivity.TAG,"Error inside getTask() : ");
+        }
+        return cursor;
+    }
 }

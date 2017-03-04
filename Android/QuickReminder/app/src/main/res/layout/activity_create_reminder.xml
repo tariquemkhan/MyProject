@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/rlParentLayout"
     tools:context="com.example.quickreminder.Activity.CreateReminderActivity">
 
     <android.support.design.widget.TextInputLayout
@@ -82,7 +85,7 @@
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_weight="1"
             android:text="@string/btn_cancel_text"
             android:textColor="@color/colorPrimary" />
@@ -90,7 +93,7 @@
         <Button
             android:id="@+id/btnOk"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_weight="1"
             android:text="@string/btn_ok_text"
             android:textColor="@color/colorPrimary" />

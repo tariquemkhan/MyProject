@@ -1,7 +1,9 @@
 package com.example.quickreminder.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
@@ -11,9 +13,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.quickreminder.R;
 
@@ -26,6 +30,8 @@ public class CreateReminderActivity extends AppCompatActivity implements View.On
     private EditText etDescription, etTitle, etTime;
 
     private TextInputLayout tilTitle, tilDescription, tilTime;
+
+    private RelativeLayout rlParentLayout;
 
     private long timestamp = 0;
 
@@ -44,12 +50,18 @@ public class CreateReminderActivity extends AppCompatActivity implements View.On
         mContext = this;
         reminderDatabase = new ReminderDatabase(mContext);
         initComponent();
+        boolean isEdit = getIntent().getBooleanExtra("IS_EDIT",false);
+        if (isEdit) {
+            String task_id = getIntent().getStringExtra("TASK_ID");
+            setValue(task_id);
+        }
     }
 
     /**
      * Initialize the layout component
      */
     private void initComponent() {
+        rlParentLayout = (RelativeLayout) findViewById(R.id.rlParentLayout);
         ivTimepicker = (ImageView)findViewById(R.id.ivTimePicker);
         etTitle = (EditText) findViewById(R.id.etTitle);
         etTitle.addTextChangedListener(watcher);
@@ -70,7 +82,13 @@ public class CreateReminderActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.ivTimePicker :
-                ivTimepicker.requestFocus();
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) this.getSystemService(
+                                Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(
+                        this.getCurrentFocus().getWindowToken(), 0);
+                rlParentLayout.setFocusable(true);
+                rlParentLayout.setFocusableInTouchMode(true);
                 DatePickerFragment datePickerFragment = new DatePickerFragment();
                 FragmentManager fm = getSupportFragmentManager();
                 datePickerFragment.show(fm,"Picker Dialog");
@@ -122,6 +140,16 @@ public class CreateReminderActivity extends AppCompatActivity implements View.On
         this.timestamp = timeStamp;
         etTime.setText(ReminderHelper.getFromattedDate(this.timestamp));
         Log.d(TAG,"date in addDate() : "+timeStamp);
+    }
+
+    public void setValue(String task_id) {
+        Cursor cursor = reminderDatabase.getTask(task_id);
+        cursor.moveToFirst();
+        etTitle.setText(cursor.getString(cursor.getColumnIndex(ReminderDatabase.TASK_TITLE)));
+        etDescription.setText(cursor.getString(cursor.getColumnIndex(ReminderDatabase.TASK_DESCRIPTION)));
+        long time = cursor.getInt(cursor.getColumnIndex(ReminderDatabase.TASK_TIMESTAMP));
+        String formattedTime = ReminderHelper.getFromattedDate(time * 1000);
+        etTime.setText(formattedTime);
     }
 
     /**
