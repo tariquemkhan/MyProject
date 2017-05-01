@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="./css/chattheme.css" type="text/css"/>
 </head>
 
-<body>
+<body ng-app="chatApp" ng-controller="MainController">
 
-  Hello World
+  <ui-view></ui-view>
 
   <!-- jQuery plugin -->
   <script type="text/javascript" src="./libs/jquery-3.2.1.min.js"></script>
@@ -21,6 +21,18 @@
   </script>
   <!-- angularJs framework -->
   <script src="./libs/angular-1.6.4/angular.min.js"></script>
+
+  <!-- angular Ui bootstrap -->
+  <script src="./libs/ui-bootstrap-tpls-2.5.0.min.js"></script>
+
+  <!--Script for Ui Roter -->
+  <script src="//unpkg.com/angular-ui-router@1.0.0-beta.3/release/angular-ui-router.js"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+
+  <script type="text/javascript" src="./js/main.js"></script>
+
+  <script type="text/javascript" src="./js/config-router.js"></script>
+
 
 </body>
 
