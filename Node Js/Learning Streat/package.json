@@ -1,0 +1,19 @@
+{
+  "name": "learningstreet",
+  "version": "1.0.0",
+  "description": "This provides tutorial for different kinds of programming language.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tarique Khan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-validator": "^0.11.9",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25"
+  }
+}

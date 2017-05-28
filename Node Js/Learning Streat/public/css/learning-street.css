@@ -1,0 +1,33 @@
+.index-header {
+	padding: 15px;
+}
+h1.website-heading {
+	color: white;
+	font-family: sans-serif;
+	margin: 0px;
+	margin-bottom: 10px;
+}
+.header-wrapper {
+	padding: 15px 0px;
+	background: #8BC34A;
+}
+
+.header-xs {
+	background: #8BC34A;
+	margin-bottom: 10px;
+}
+.animation-container {
+	padding: 15px;
+}
+.sign-up-input {
+	width: 49%;
+}
+.no-padding{
+	padding: 0px !important;
+}
+.m-l-lg {
+	margin-left: 20px;
+}
+.m-l-md {
+	margin-left: 15px;
+}
