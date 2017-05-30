@@ -1,0 +1,16 @@
+{
+  "name": "imageuploadeserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tarique Khan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "dropbox": "^2.5.3",
+    "express": "^4.15.3"
+  }
+}

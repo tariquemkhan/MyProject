@@ -1,0 +1,35 @@
+<div ng-controller="ChatWindowController" class="full-height chatwindow-container">
+	<div class="chat-header">
+		<p class="chat-heading no-margin">{{currentChatName}}</p>
+	</div>
+	<div class="chat-panel" id="chatContainer" style="height: calc(100% - 70px - 60px - 30px - ({{inputHeight}}));" 
+	ng-repeat="(key, message) in messages | messageFilter:currentChatId">
+		<div class="row no-margin m-t-xs m-b-xs" ng-repeat="item in message | orderBy:'timestamp'">
+			<!-- receiver chat bubble layour -->
+			<div class="col-sm-6">
+				<div class="receiver-chat-bubble" ng-if="item.from_id != ownerData._id">
+					<p class="padding">{{item.message}}</p>	
+				</div>
+				
+			</div>
+			<!-- sender chat bubble layour -->
+			<div class="col-sm-6">
+				<div class="sender-chat-bubble" ng-if="item.from_id == ownerData._id">
+					<p class="padding">{{item.message}}</p>	
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="chat-footer">
+		<div class="compose-box">
+			<div class="emoji-box text-center">
+				<img class="m-t-sm" ng-src="img/ic_emoticon_1x.png">
+			</div>
+			<div class="compose-field p-xs" id="inputMessageField" ng-model="inputMessage" autofocus="true" contenteditable></div>
+			<div class="msg-send-btn text-center" ng-click="sendMessage(inputMessage)">
+				<img class="m-t-sm" ng-src="img/ic_send_1x.png">
+			</div>
+		</div>
+	</div>
+</div>

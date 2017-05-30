@@ -8,6 +8,10 @@ chatApp.config(function($stateProvider, $urlRouterProvider) {
         .state('conversation', {
             url: '/conversation',
             templateUrl: 'views/conversation.html'
+        })
+        .state('conversation.chatwindow', {
+            url: '/:chatId',
+            templateUrl: 'views/chat-window.html'
         });
         
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
