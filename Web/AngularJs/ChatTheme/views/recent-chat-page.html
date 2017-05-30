@@ -1,0 +1,8 @@
+<div>
+	<ul class="list-group">
+		<li class="list-group-item recent-item" ng-repeat="(key, value) in users |orderObjectBy : 'name' : false"
+		ng-click="openChatWindow(value._id)" ng-class="{selectedchat : value._id == currentChat}">
+			{{value.name}}
+		</li>
+	</ul>
+</div>

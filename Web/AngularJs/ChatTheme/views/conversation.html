@@ -1,1 +1,11 @@
-<ng-include src="/blocks/sidebar-nav.html"></ng-include>
+<div ng-include=" 'views/blocks/header.html' " class="app-header"></div>
+<div ng-include=" 'views/blocks/sidebar-nav.html' " class="full-height" id="app-sidebar"></div>
+
+<div class="full-height" id="mainContainer" ng-controller="ConversationController">
+	<div ng-include=" 'views/conversation-tabs.html' " class="full-height pull-left" id="conversation-tab"></div>
+
+	<div id="bodyContainer" class="pull-left full-height">
+		<ui-view></ui-view>
+	</div>
+
+</div>
