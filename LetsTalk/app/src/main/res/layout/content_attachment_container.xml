@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/content_chat_footer">
+
+    <ImageView
+        android:id="@+id/ivEmoticon"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_insert_emoticon_black_24dp" />
+
+    <ImageView
+        android:id="@+id/ivGallery"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_photo_black_24dp" />
+
+    <ImageView
+        android:id="@+id/ivCamera"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_camera_alt_black_24dp" />
+
+    <ImageView
+        android:id="@+id/ivVideoRecording"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_videocam_black_24dp" />
+
+    <ImageView
+        android:id="@+id/ivMusic"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_music_note_black_24dp" />
+
+    <ImageView
+        android:id="@+id/ivFileAttachment"
+        android:layout_width="@dimen/attachment_image"
+        android:layout_height="@dimen/attachment_image"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:padding="@dimen/attachment_image_padding"
+        android:src="@mipmap/ic_insert_drive_file_black_24dp" />
+
+</LinearLayout>

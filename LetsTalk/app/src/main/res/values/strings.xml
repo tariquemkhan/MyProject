@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LetsTalk</string>
+    <!--Preference file string-->
+    <string name="pref_name">Lets Talk Preference</string>
+
+    <!--Email Activity Strings-->
+    <string name="btn_start">Next</string>
+    <string name="email_hint">Enter your Email Address</string>
+
+    <!--Chatwindow Activity strings-->
+    <string name="compose_field_hint">Type a message</string>
+
+</resources>
