@@ -3,6 +3,6 @@
 
     <!--dimensions for chatwindow activity-->
     <dimen name="attachment_image">50dp</dimen>
-    <dimen name="attachment_image_padding">10dp</dimen>
+    <dimen name="attachment_image_padding">13dp</dimen>
 
 </resources>

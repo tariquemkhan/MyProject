@@ -3,8 +3,8 @@
     android:id="@+id/rlChatwindowFooterSub"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="#fff">
+    android:background="#fff"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,8 +45,10 @@
 
             <ImageView
                 android:id="@+id/ivSend"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:src="@mipmap/ic_send_black_24dp" />
 
         </RelativeLayout>
@@ -84,7 +86,7 @@
     </RelativeLayout>
 
     <include
-        layout="@layout/content_attachment_container"
-        android:id="@+id/attachmentContainer"/>
+        android:id="@+id/attachmentContainer"
+        layout="@layout/content_attachment_container" />
 
 </LinearLayout>
