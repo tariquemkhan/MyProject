@@ -10,4 +10,11 @@
     <!--Chatwindow Activity strings-->
     <string name="compose_field_hint">Type a message</string>
 
+    <!--Gallery explorer activity strings-->
+    <string name="gallery_activity_title">Gallery</string>
+    <string name="photo_gallery">PHOTOS</string>
+    <string name="video_gallery">VIDEOS</string>
+    <string name="photo_fragment_tag">Photo Fragment</string>
+    <string name="video_fragment_tag">Video Fragment</string>
+
 </resources>
